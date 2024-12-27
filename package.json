@@ -1,0 +1,28 @@
+{
+  "name": "config-essentials",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
+    "format": "prettier --write ."
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.17.2",
+    "@changesets/cli": "^2.27.11",
+    "@types/node": "^22.10.2",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "zod": "^3.24.1"
+  }
+}
