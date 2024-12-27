@@ -1,5 +1,11 @@
 # config-essentials
 
+## 0.1.2
+
+### Patch Changes
+
+- d02ba65: add package.json exports
+
 ## 0.1.1
 
 ### Patch Changes
