@@ -1,5 +1,7 @@
 # config-essentials
 
+[![npm version](https://img.shields.io/npm/v/config-essentials.svg)](https://www.npmjs.com/package/config-essentials)
+
 A lightweight, TypeScript-first configuration library with zero dependencies.
 Built from battle-tested patterns in service configuration, config-essentials strips away complexity to provide just what you need.
 It offers a minimal, flexible foundation in plain JavaScript/TypeScript, with clean extension points for custom configuration sources.
