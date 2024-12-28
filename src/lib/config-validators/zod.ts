@@ -1,8 +1,8 @@
-import type { ZodSchema } from 'zod';
+import type { ZodSchema, ZodTypeDef } from 'zod';
 import type { ConfigValidator } from '../config-validator.js';
 
 export interface GetZodConfigValidatorParams<TConfig> {
-  schema: ZodSchema<TConfig>;
+  schema: ZodSchema<TConfig, ZodTypeDef, unknown>;
 }
 
 export function getZodConfigValidator<TConfig extends Record<string, unknown>>(
