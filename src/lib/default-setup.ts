@@ -1,6 +1,6 @@
 import type { InitConfigParams } from '../index.js';
 import type { ZodSchema } from 'zod';
-import type { BaseConfig } from './config-provider.js';
+import type { BaseConfig, ConfigProvider } from './config-provider.js';
 import { getJsonFileConfigProvider } from './config-providers/json-file.js';
 import { getEnvironmentConfigProvider } from './config-providers/environment.js';
 import { getZodConfigValidator } from './config-validators/zod.js';
@@ -12,12 +12,20 @@ export interface GetConfigDefaultSetupParams<TConfig extends BaseConfig> {
   prefix?: string;
   env?: NodeJS.ProcessEnv;
   configDir?: string;
+  providers?: ConfigProvider[];
 }
 
 export function getConfigDefaultSetup<TConfig extends BaseConfig>(
   params: GetConfigDefaultSetupParams<TConfig>,
 ): InitConfigParams<TConfig> {
-  const { schema, environmentName, prefix, env, configDir = 'config' } = params;
+  const {
+    schema,
+    environmentName,
+    prefix,
+    env,
+    configDir = 'config',
+    providers = [],
+  } = params;
   return {
     providers: [
       getJsonFileConfigProvider({
@@ -27,6 +35,7 @@ export function getConfigDefaultSetup<TConfig extends BaseConfig>(
         path: path.join(configDir, 'config.local.json'),
       }),
       getEnvironmentConfigProvider({ env, prefix }),
+      ...providers
     ],
     validate: getZodConfigValidator({ schema }),
   };
