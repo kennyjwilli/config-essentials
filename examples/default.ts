@@ -9,6 +9,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ExampleConfigSchema = z.object({
   server: z.object({
     port: z.coerce.number(),
+    // Example showing zod transforms type support
+    timeout: z.string().transform(s => parseInt(s))
   }),
   logging: z
     .object({
