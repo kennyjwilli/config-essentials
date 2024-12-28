@@ -1,5 +1,11 @@
 # config-essentials
 
+## 0.1.4
+
+### Patch Changes
+
+- f250b62: improve zod transform types
+
 ## 0.1.3
 
 ### Patch Changes
