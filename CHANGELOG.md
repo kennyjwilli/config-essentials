@@ -1,5 +1,11 @@
 # config-essentials
 
+## 0.1.5
+
+### Patch Changes
+
+- e35bff4: support zod transforms in default-setup
+
 ## 0.1.4
 
 ### Patch Changes
