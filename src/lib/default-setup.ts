@@ -35,7 +35,7 @@ export function getConfigDefaultSetup<TConfig extends BaseConfig>(
         path: path.join(configDir, 'config.local.json'),
       }),
       getEnvironmentConfigProvider({ env, prefix }),
-      ...providers
+      ...providers,
     ],
     validate: getZodConfigValidator({ schema }),
   };

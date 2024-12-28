@@ -75,7 +75,7 @@ Its role is to:
 
 A Zod-based validator, for instance, would use a schema's `.parse` method to perform these operations.
 
-## Releases 
+## Releases
 
 ```shell
 npx changeset

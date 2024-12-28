@@ -1,5 +1,11 @@
 # config-essentials
 
+## 0.1.3
+
+### Patch Changes
+
+- 2fbd0ce: support extra providers
+
 ## 0.1.2
 
 ### Patch Changes
