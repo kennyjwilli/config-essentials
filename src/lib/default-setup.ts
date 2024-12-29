@@ -8,7 +8,7 @@ import * as path from 'node:path';
 
 export interface GetConfigDefaultSetupParams<TConfig extends BaseConfig> {
   schema: ZodSchema<TConfig, ZodTypeDef, unknown>;
-  environmentName: string;
+  environmentName?: string;
   prefix?: string;
   env?: NodeJS.ProcessEnv;
   configDir?: string;
@@ -30,9 +30,13 @@ export function getDefaultConfigProviders<TConfig extends BaseConfig>(
     getJsonFileConfigProvider({
       path: path.join(configDir, 'config.json'),
     }),
-    getJsonFileConfigProvider({
-      path: path.join(configDir, `config.${environmentName}.json`),
-    }),
+    ...(environmentName
+      ? [
+          getJsonFileConfigProvider({
+            path: path.join(configDir, `config.${environmentName}.json`),
+          }),
+        ]
+      : []),
     getJsonFileConfigProvider({
       path: path.join(configDir, 'config.local.json'),
     }),
