@@ -9,11 +9,21 @@ It offers a minimal, flexible foundation in plain JavaScript/TypeScript, with cl
 ## Usage
 
 Config-essentials provides opinionated defaults for simple application configuration.
+The recommended pattern uses a combination of JSON files and environment variables to handle different deployment scenarios.
+
+### Basic Setup
+
+First, define your configuration schema:
 
 ```typescript
 const ConfigSchema = z.object({
   server: z.object({
     port: z.coerce.number(),
+    host: z.string().default('localhost'),
+  }),
+  database: z.object({
+    url: z.string(),
+    maxConnections: z.number().default(5),
   }),
   logging: z
     .object({
@@ -21,24 +31,106 @@ const ConfigSchema = z.object({
     })
     .optional(),
 });
+```
 
+### File Structure
+
+Create a `config` directory in your project root with the following files:
+
+```
+project-root/
+├── config/
+│   ├── config.json           # Base configuration with defaults
+│   ├── config.local.json     # Local overrides and secrets (gitignored)
+│   ├── config.staging.json   # Staging environment configuration
+│   └── config.prod.json      # Production environment configuration
+└── .gitignore
+```
+
+#### Base Configuration (config.json)
+
+The base configuration file contains reasonable defaults and non-sensitive configuration:
+
+```json
+{
+  "server": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "database": {
+    "maxConnections": 5
+  },
+  "logging": {
+    "level": "info"
+  }
+}
+```
+
+#### Local Development (config.local.json)
+
+Create a `config.local.json` file for local development secrets and overrides. Add `*.local*` to your `.gitignore`:
+
+```json
+{
+  "database": {
+    "url": "postgresql://user:password@localhost:5432/mydb"
+  }
+}
+```
+
+#### Environment-Specific Configuration (config.{env}.json)
+
+Create environment-specific files for staging, production, or other environments:
+
+```json
+// config.staging.json
+{
+  "server": {
+    "host": "staging.example.com"
+  },
+  "logging": {
+    "level": "debug"
+  }
+}
+```
+
+### Initialization
+
+Initialize the configuration with the appropriate environment:
+
+```typescript
 const { config } = initConfig(
   getConfigDefaultSetup({
     schema: ConfigSchema,
-    environmentName: 'dev',
+    environmentName: process.env.ACME_ENV,
     prefix: 'ACME',
     configDir: 'config',
   }),
 );
 ```
 
-Configuration values are read in the following priority order:
+### Environment Variables
 
-1. Environment variables (e.g., ACME_SERVER\_\_PORT)
-2. Local override file (config/config.local.json)
-3. Environment-specific file (config/config.dev.json)
+Use environment variables to override configuration values in deployment environments:
 
-The loaded configuration is validated against ConfigSchema and returned as a fully type-safe object.
+```bash
+# Override database URL in production
+export ACME_DATABASE__URL="postgresql://user:password@prod-db:5432/mydb"
+
+# Override server port
+export ACME_SERVER__PORT="8080"
+```
+
+Remember that environment variables take precedence over file-based configuration.
+
+### Value Resolution
+
+Configuration values are resolved in the following order (highest to lowest precedence):
+
+1. Environment variables (e.g., `ACME_SERVER__PORT`)
+2. Local override file (`config/config.local.json`)
+3. Environment-specific file (`config/config.{env}.json`)
+4. Base configuration file (`config/config.json`)
 
 ## Motivation
 
