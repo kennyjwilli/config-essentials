@@ -1,22 +1,21 @@
 /**
  * Deeply merges two objects or arrays, handling nested structures
- * @param target The target object to merge into
- * @param source The source object to merge from
+ * @param obj1 The target object to merge into
+ * @param obj2 The source object to merge from
  * @returns A new object with merged properties
  */
-export function deepMerge<T extends object>(target: T, source: Partial<T>): T {
-  // Create a new object to avoid modifying the original
-  const output = { ...target };
-
+export function deepMerge(obj1: unknown, obj2: unknown): unknown {
   // If either input is not an object, return source if it exists, otherwise target
-  if (!isObject(target) || !isObject(source)) {
-    return (source as T) ?? target;
+  if (!isObject(obj1) || !isObject(obj2)) {
+    return obj2 ?? obj1;
   }
 
+  const output = { ...obj1 };
+
   // Iterate through all properties in source
-  Object.keys(source).forEach((key) => {
+  Object.keys(obj2).forEach((key) => {
     const targetValue = (output as any)[key];
-    const sourceValue = (source as any)[key];
+    const sourceValue = (obj2 as any)[key];
 
     if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
       // If both values are arrays, merge them
@@ -65,7 +64,11 @@ export function setObject<T extends Record<string, any>>(
     current = current[key];
   });
 
-  current[path[lastIndex] ?? ''] = value;
+  const pathK = path[lastIndex];
+  if (pathK) {
+    current[pathK] = value;
+  }
+
   return object;
 }
 
@@ -76,7 +79,7 @@ export function camelCase(string: string): string {
   }
 
   // Step 1: Convert the string to lowercase
-  string = string.toLowerCase();
+  string = string.toLowerCase().trim();
 
   // Step 2: Replace special characters with spaces
   string = string.replace(/[^\w\s]/g, ' ');
@@ -96,4 +99,28 @@ export function camelCase(string: string): string {
       return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     })
     .join('');
+}
+
+export function parseEnvKey(envKey: string): string[] {
+  return envKey.split('__').map(camelCase);
+}
+
+export function readProcessEnv(params: {
+  env: NodeJS.ProcessEnv;
+  prefix?: string;
+}): Record<string, unknown> {
+  const { env, prefix } = params;
+  return Object.entries(env)
+    .filter(([k]) => (prefix ? k.startsWith(prefix) : true))
+    .map(([k, v]): [string, string | undefined] => [
+      prefix ? k.substring(prefix.length + 1) : k,
+      v,
+    ])
+    .reduce((acc, [k, v]) => {
+      if (v && v.length > 0) {
+        return setObject(acc, parseEnvKey(k), v);
+      } else {
+        return acc;
+      }
+    }, {});
 }
