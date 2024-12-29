@@ -1,6 +1,6 @@
-import { deepMerge } from './utils.js';
-import type { BaseConfig, ConfigProvider } from './lib/config-provider.js';
-import type { ConfigValidator } from './lib/config-validator.js';
+import { deepMerge } from './utils.ts';
+import type { BaseConfig, ConfigProvider } from './lib/config-provider.ts';
+import type { ConfigValidator } from './lib/config-validator.ts';
 
 export function defaultConfigValidate<TConfig>(value: unknown): TConfig {
   return value as TConfig;
@@ -24,7 +24,7 @@ export function initConfig<TConfig extends BaseConfig = BaseConfig>(
   const unsafeConfig = providers.reduce((configAcc, provider) => {
     const configPart = provider.read();
     return deepMerge(configAcc, configPart);
-  }, {});
+  }, {} as unknown);
 
   const config = validate(unsafeConfig);
 

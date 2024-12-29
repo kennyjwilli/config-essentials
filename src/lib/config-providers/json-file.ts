@@ -1,6 +1,6 @@
-import type { BaseConfig, ConfigProvider } from '../config-provider.js';
+import type { BaseConfig, ConfigProvider } from '../config-provider.ts';
 import * as fs from 'node:fs';
-import { ConfigProviderError } from '../config-provider-error.js';
+import { ConfigProviderError } from '../config-provider-error.ts';
 
 function readJsonFile(path: string): BaseConfig {
   if (!fs.existsSync(path)) {
