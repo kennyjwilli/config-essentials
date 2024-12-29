@@ -15,28 +15,39 @@ export interface GetConfigDefaultSetupParams<TConfig extends BaseConfig> {
   providers?: ConfigProvider[];
 }
 
-export function getConfigDefaultSetup<TConfig extends BaseConfig>(
-  params: GetConfigDefaultSetupParams<TConfig>,
-): InitConfigParams<TConfig> {
+export function getDefaultConfigProviders<TConfig extends BaseConfig>(
+  params: Omit<GetConfigDefaultSetupParams<TConfig>, 'schema'>,
+): ConfigProvider[] {
   const {
-    schema,
     environmentName,
     prefix,
     env,
     configDir = 'config',
     providers = [],
   } = params;
+
+  return [
+    getJsonFileConfigProvider({
+      path: path.join(configDir, 'config.json'),
+    }),
+    getJsonFileConfigProvider({
+      path: path.join(configDir, `config.${environmentName}.json`),
+    }),
+    getJsonFileConfigProvider({
+      path: path.join(configDir, 'config.local.json'),
+    }),
+    getEnvironmentConfigProvider({ env, prefix }),
+    ...providers,
+  ];
+}
+
+export function getConfigDefaultSetup<TConfig extends BaseConfig>(
+  params: GetConfigDefaultSetupParams<TConfig>,
+): InitConfigParams<TConfig> {
+  const { schema, providers = [] } = params;
+  const defaultProviders = getDefaultConfigProviders(params);
   return {
-    providers: [
-      getJsonFileConfigProvider({
-        path: path.join(configDir, `config.${environmentName}.json`),
-      }),
-      getJsonFileConfigProvider({
-        path: path.join(configDir, 'config.local.json'),
-      }),
-      getEnvironmentConfigProvider({ env, prefix }),
-      ...providers,
-    ],
+    providers: [...defaultProviders, ...providers],
     validate: getZodConfigValidator({ schema }),
   };
 }
