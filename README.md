@@ -74,10 +74,3 @@ Its role is to:
 - Return a fully validated configuration object
 
 A Zod-based validator, for instance, would use a schema's `.parse` method to perform these operations.
-
-## Releases
-
-```shell
-npx changeset
-npm run local-release
-```
