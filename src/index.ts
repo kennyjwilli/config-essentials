@@ -1,6 +1,6 @@
-import { deepMerge } from './utils.ts';
-import type { BaseConfig, ConfigProvider } from './lib/config-provider.ts';
-import type { ConfigValidator } from './lib/config-validator.ts';
+import { deepMerge } from './utils.js';
+import type { BaseConfig, ConfigProvider } from './lib/config-provider.js';
+import type { ConfigValidator } from './lib/config-validator.js';
 
 export function defaultConfigValidate<TConfig>(value: unknown): TConfig {
   return value as TConfig;

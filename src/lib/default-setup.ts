@@ -1,9 +1,9 @@
-import type { InitConfigParams } from '../index.ts';
+import type { InitConfigParams } from '../index.js';
 import type { ZodSchema, ZodTypeDef } from 'zod';
-import type { BaseConfig, ConfigProvider } from './config-provider.ts';
-import { getJsonFileConfigProvider } from './config-providers/json-file.ts';
-import { getEnvironmentConfigProvider } from './config-providers/environment.ts';
-import { getZodConfigValidator } from './config-validators/zod.ts';
+import type { BaseConfig, ConfigProvider } from './config-provider.js';
+import { getJsonFileConfigProvider } from './config-providers/json-file.js';
+import { getEnvironmentConfigProvider } from './config-providers/environment.js';
+import { getZodConfigValidator } from './config-validators/zod.js';
 import * as path from 'node:path';
 
 export interface GetConfigDefaultSetupParams<TConfig extends BaseConfig> {

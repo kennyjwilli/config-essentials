@@ -1,5 +1,5 @@
-import type { ConfigProvider } from '../config-provider.ts';
-import { readProcessEnv } from '../../utils.ts';
+import type { ConfigProvider } from '../config-provider.js';
+import { readProcessEnv } from '../../utils.js';
 
 export interface GetEnvironmentConfigProviderParams {
   env?: NodeJS.ProcessEnv;

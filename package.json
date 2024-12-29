@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "packageManager": "pnpm@9.15.2",
   "scripts": {
-    "test": "node --experimental-strip-types --test",
+    "test": "tsx --experimental-strip-types --test",
     "build": "tsc",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm --profile=esm-only",
     "format": "prettier --write .",

@@ -6,7 +6,7 @@ import {
   parseEnvKey,
   readProcessEnv,
   setObject,
-} from './utils.ts';
+} from './utils.js';
 
 test('deepMerge function', async (t) => {
   await t.test('merges flat objects correctly', () => {
