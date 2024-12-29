@@ -1,5 +1,11 @@
 # config-essentials
 
+## 0.1.6
+
+### Patch Changes
+
+- 65b5267: base json file & misc minor bug fixes
+
 ## 0.1.5
 
 ### Patch Changes
