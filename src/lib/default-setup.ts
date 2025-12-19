@@ -1,5 +1,5 @@
 import type { InitConfigParams } from '../index.js';
-import type { ZodSchema, ZodTypeDef } from 'zod';
+import type { ZodType } from 'zod';
 import type { BaseConfig, ConfigProvider } from './config-provider.js';
 import { getJsonFileConfigProvider } from './config-providers/json-file.js';
 import { getEnvironmentConfigProvider } from './config-providers/environment.js';
@@ -7,7 +7,7 @@ import { getZodConfigValidator } from './config-validators/zod.js';
 import * as path from 'node:path';
 
 export interface GetConfigDefaultSetupParams<TConfig extends BaseConfig> {
-  schema: ZodSchema<TConfig, ZodTypeDef, unknown>;
+  schema: ZodType<TConfig>;
   environmentName?: string;
   prefix?: string;
   env?: NodeJS.ProcessEnv;
