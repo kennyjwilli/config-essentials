@@ -1,13 +1,15 @@
 import type { InitConfigParams } from '../index.js';
-import type { ZodType } from 'zod';
+import type { ZodType, output } from 'zod';
 import type { BaseConfig, ConfigProvider } from './config-provider.js';
 import { getJsonFileConfigProvider } from './config-providers/json-file.js';
 import { getEnvironmentConfigProvider } from './config-providers/environment.js';
 import { getZodConfigValidator } from './config-validators/zod.js';
 import * as path from 'node:path';
 
-export interface GetConfigDefaultSetupParams<TConfig extends BaseConfig> {
-  schema: ZodType<TConfig>;
+export interface GetConfigDefaultSetupParams<
+  TSchema extends ZodType<BaseConfig>,
+> {
+  schema: TSchema;
   environmentName?: string;
   prefix?: string;
   env?: NodeJS.ProcessEnv;
@@ -15,8 +17,8 @@ export interface GetConfigDefaultSetupParams<TConfig extends BaseConfig> {
   providers?: ConfigProvider[];
 }
 
-export function getDefaultConfigProviders<TConfig extends BaseConfig>(
-  params: Omit<GetConfigDefaultSetupParams<TConfig>, 'schema'>,
+export function getDefaultConfigProviders<TSchema extends ZodType<BaseConfig>>(
+  params: Omit<GetConfigDefaultSetupParams<TSchema>, 'schema'>,
 ): ConfigProvider[] {
   const {
     environmentName,
@@ -45,9 +47,9 @@ export function getDefaultConfigProviders<TConfig extends BaseConfig>(
   ];
 }
 
-export function getConfigDefaultSetup<TConfig extends BaseConfig>(
-  params: GetConfigDefaultSetupParams<TConfig>,
-): InitConfigParams<TConfig> {
+export function getConfigDefaultSetup<TSchema extends ZodType<BaseConfig>>(
+  params: GetConfigDefaultSetupParams<TSchema>,
+): InitConfigParams<output<TSchema>> {
   const { schema, providers = [] } = params;
   const defaultProviders = getDefaultConfigProviders(params);
   return {

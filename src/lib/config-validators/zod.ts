@@ -1,13 +1,16 @@
-import type { ZodType } from 'zod';
+import type { ZodType, output } from 'zod';
 import type { ConfigValidator } from '../config-validator.js';
+import type { BaseConfig } from '../config-provider.js';
 
-export interface GetZodConfigValidatorParams<TConfig> {
-  schema: ZodType<TConfig>;
+export interface GetZodConfigValidatorParams<
+  TSchema extends ZodType<BaseConfig>,
+> {
+  schema: TSchema;
 }
 
-export function getZodConfigValidator<TConfig extends Record<string, unknown>>(
-  params: GetZodConfigValidatorParams<TConfig>,
-): ConfigValidator<TConfig> {
+export function getZodConfigValidator<TSchema extends ZodType<BaseConfig>>(
+  params: GetZodConfigValidatorParams<TSchema>,
+): ConfigValidator<output<TSchema>> {
   const { schema } = params;
   return (value) => {
     const result = schema.safeParse(value);
